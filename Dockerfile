@@ -23,7 +23,7 @@ ADD mitmproxy/* /bin/
 ADD hostapd.conf /etc/hostapd/hostapd.conf
 ADD hostapd /etc/default/hostapd
 ADD dnsmasq.conf /etc/dnsmasq.conf
-ADD data/spoof.hosts /etc/dnsmasq.d/spoof.hosts
+ADD data/hosts.dnsmasq /etc/hosts.dnsmasq
 
 ADD entrypoint.sh /root/entrypoint.sh
 WORKDIR /root
