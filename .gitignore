@@ -1,3 +1,5 @@
 run.sh
 data/*
 !data/.gitkeep
+!data/amazon.com
+!data/hosts.dnsmasq
