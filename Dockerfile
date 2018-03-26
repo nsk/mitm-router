@@ -12,7 +12,9 @@ RUN apt-get update --fix-missing && apt-get install -y \
     iptables \
     dnsmasq \
     net-tools \
-    macchanger
+    macchanger \
+    nano \
+    python3
 
 # mitmproxy requires this env
 ENV LANG en_US.UTF-8 
@@ -21,6 +23,7 @@ ADD mitmproxy/* /bin/
 ADD hostapd.conf /etc/hostapd/hostapd.conf
 ADD hostapd /etc/default/hostapd
 ADD dnsmasq.conf /etc/dnsmasq.conf
+ADD data/hosts.dnsmasq /etc/hosts.dnsmasq
 
 ADD entrypoint.sh /root/entrypoint.sh
 WORKDIR /root

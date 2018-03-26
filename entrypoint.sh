@@ -41,6 +41,8 @@ if [ "$MAC" != "unchanged" ] ; then
   ifconfig "$AP_IFACE" up
 fi 
 
+# assign the access point interface the
+# correct static IP (very important!)
 ifconfig "$AP_IFACE" 10.0.0.1/24
 
 # configure WPA password if provided
@@ -99,7 +101,10 @@ trap term_handler SIGKILL
 mitmdump -T --host -p 1337 -w "$CAPTURE_FILE" "$FILTER" & 
 MITMDUMP_PID=$!
 
+cd data/amazon.com
+python3 -m http.server 80
+
 # wait forever
-sleep infinity &
-CHILD=$!
-wait "$CHILD"
+# sleep infinity &
+# CHILD=$!
+# wait "$CHILD"
