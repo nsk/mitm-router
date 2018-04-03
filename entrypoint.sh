@@ -3,7 +3,7 @@
 AP_IFACE="${AP_IFACE:-wlan0}"
 INTERNET_IFACE="${INTERNET_IFACE:-eth0}"
 SSID="${SSID:-Public}"
-CAPTURE_FILE="${CAPTURE_FILE:-/root/data/http-traffic.cap}"
+CAPTURE_FILE="${CAPTURE_FILE:-/root/data/http-traffic_$(date +%Y-%m-%dT%H:%M).cap}"
 MAC="${MAC:-random}"
 
 # SIGTERM-handler
@@ -77,9 +77,9 @@ iptables -t nat -C POSTROUTING -o "$INTERNET_IFACE" -j MASQUERADE
 if [ ! $? -eq 0 ] ; then
     iptables -t nat -A POSTROUTING -o "$INTERNET_IFACE" -j MASQUERADE
 fi
-iptables -C FORWARD -i "$INTERNET_IFACE" -o "$AP_IFACE" -m state --state RELATED,ESTABLISHED -j ACCEPT 
+iptables -C FORWARD -i "$INTERNET_IFACE" -o "$AP_IFACE" -m state --state RELATED,ESTABLISHED -j ACCEPT
 if [ ! $? -eq 0 ] ; then
-    iptables -A FORWARD -i "$INTERNET_IFACE" -o "$AP_IFACE" -m state --state RELATED,ESTABLISHED -j ACCEPT 
+    iptables -A FORWARD -i "$INTERNET_IFACE" -o "$AP_IFACE" -m state --state RELATED,ESTABLISHED -j ACCEPT
 fi
 iptables -C FORWARD -i "$AP_IFACE" -o "$INTERNET_IFACE" -j ACCEPT
 if [ ! $? -eq 0 ] ; then
@@ -98,13 +98,12 @@ trap term_handler SIGTERM
 trap term_handler SIGKILL
 
 # start mitmproxy in the background, but keep its output in this session
-mitmdump -T --host -p 1337 -w "$CAPTURE_FILE" "$FILTER" & 
+# edit: removed writing to file with -w
+mitmdump -T --host -p 1337 "$FILTER" &
 MITMDUMP_PID=$!
 
-cd data/amazon.com
-python3 -m http.server 80
 
 # wait forever
-# sleep infinity &
-# CHILD=$!
-# wait "$CHILD"
+sleep infinity &
+CHILD=$!
+wait "$CHILD"
