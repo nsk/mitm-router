@@ -1,6 +1,6 @@
 # FROM debian:jessie
 # replace ^ with below for raspberry pi
-FROM resin/rpi-raspbian:jessie
+FROM resin/rpi-raspbian:Bookworm
 
 LABEL maintainer="brannon@brannondorsey.com"
 LABEL license="MIT"
